@@ -1,0 +1,22 @@
+[versions]
+kotlinVersion="1.9.23"
+projectVersion = "0.0.1"
+kotlinCompiler = "1.9.23"
+konsoleVersion = "0.0.1"
+gradlePublishVersion = "1.2.1"
+artifactoryVersion="5.2.0"
+agpVersion="8.3.0"
+
+
+[libraries]
+jetbrains-kotlin-compiler = { group = "org.jetbrains.kotlin", name = "kotlin-compiler", version.ref = "kotlinCompiler" }
+jetbrains-kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlinCompiler" }
+
+[plugins]
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
+kotlin = { id = "multiplatform", version.ref = "kotlinVersion" }
+android-library = { id = "com.android.library", version.ref = "agpVersion" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+konsole = { id = "konsole-plugin" , version.ref = "konsoleVersion" }
+gradle-publish = { id = "com.gradle.plugin-publish" , version.ref = "gradlePublishVersion" }
+artifactory = { id = "com.jfrog.artifactory" , version.ref = "artifactoryVersion" }

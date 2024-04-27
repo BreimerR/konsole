@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="konsole-js-provider(?)">
+    <output-path>$PROJECT_DIR$/lib/build/libs</output-path>
+    <root id="archive" name="konsole-js-provider(_).jar" />
+  </artifact>
+</component>
