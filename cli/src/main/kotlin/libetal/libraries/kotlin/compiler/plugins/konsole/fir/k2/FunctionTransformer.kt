@@ -1,19 +1,18 @@
 package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
-import org.jetbrains.kotlin.backend.common.extensions.FirIncompatiblePluginAPI
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.backend.js.utils.valueArguments
-import org.jetbrains.kotlin.ir.builders.IrBuilderWithScope
-import org.jetbrains.kotlin.ir.builders.irCall
-import org.jetbrains.kotlin.ir.builders.irConcat
+import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.declarations.IrFunction
+import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrTypeAlias
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
+import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.name.FqName
 
-class FunctionTransformer(pluginContext: IrPluginContext, symbol: IrFunctionSymbol) :
+class FunctionTransformer(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext, symbol: IrFunctionSymbol) :
     IrElementTransformerWithBuilder<IrFunction>(pluginContext, symbol) {
 
     val IrExpression.shouldTransform
@@ -23,13 +22,15 @@ class FunctionTransformer(pluginContext: IrPluginContext, symbol: IrFunctionSymb
         pluginContext.irBuiltIns.anyNType
     }
 
-    @OptIn(FirIncompatiblePluginAPI::class)
     val logFunction by lazy {
-        pluginContext.referenceFunctions(FqName("kotlin.io.println"))
-            .single {
-                val parameters = it.owner.valueParameters
-                parameters.size == 1 && parameters[0].type == typeAnyNullable
-            }
+        val functions = moduleFragment.irBuiltins.findFunctions(
+            org.jetbrains.kotlin.name.Name.identifier("println"),
+            FqName("kotlin.io")
+        )
+
+        functions.first {
+            it.owner.valueParameters.isNotEmpty()
+        }
     }
 
     override fun visitExpression(expression: IrExpression, data: IrFunction): IrExpression {
@@ -52,7 +53,15 @@ class FunctionTransformer(pluginContext: IrPluginContext, symbol: IrFunctionSymb
             }
         }
 
-        else -> expression
+        else -> {
+            val arguments = expression.valueArguments.firstOrNull()
+            val concat = irConcat()
+            concat.addArgument(irString("Breimer"))
+
+            irCall(logFunction).also { call ->
+                call.putValueArgument(0, arguments)
+            }
+        }
     }
 
     fun getPackageNameFromTypeAlias(typeAlias: IrTypeAlias): String? {

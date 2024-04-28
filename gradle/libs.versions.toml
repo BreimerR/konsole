@@ -6,6 +6,8 @@ konsoleVersion = "0.0.1"
 gradlePublishVersion = "1.2.1"
 artifactoryVersion="5.2.0"
 agpVersion="8.3.0"
+android-compile-sdk="33"
+android-min-sdk="24"
 
 
 [libraries]

@@ -105,8 +105,6 @@ tasks.withType<PublishToMavenRepository> {
     }
 }
 
-
-
 buildConfig {
     val project = project(":konsole-cli")
     packageName(project.group.toString())
@@ -116,7 +114,7 @@ buildConfig {
 
     val libProject = project(":konsole")
     buildConfigField("String", "KONSOLE_LIB_VERSION", "\"${libProject.version}\"")
-    buildConfigField("String", "KONSOLE_LIB_NAME", "\"${libProject.version}\"")
+    buildConfigField("String", "KONSOLE_LIB_NAME", "\"${libProject.name}\"")
     buildConfigField("String", "KONSOLE_LIB_GROUP_NAME", "\"${libProject.group}\"")
 
 }
