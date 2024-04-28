@@ -24,11 +24,8 @@ class KonsoleGradlePlugin : KotlinCompilerPluginSupportPlugin {
 
             val dependencyArtifact  = when {
                 configuration.name == "commonMainApi" || configuration.name == "commonMainApiDependenciesMetadata" -> getConsoleDependency()
-
                 configuration.name.contains("linux") ->   getConsoleDependency("native")
-
                 configuration.name.contains("ios") -> getConsoleDependency("ios")
-
                 configuration.name.contains("android") -> getConsoleDependency("android")
 
                 else -> null

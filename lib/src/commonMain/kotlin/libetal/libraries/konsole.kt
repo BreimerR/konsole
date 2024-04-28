@@ -1,62 +1,57 @@
 package libetal.libraries
 
-import kotlinx.datetime.*
-import kotlinx.datetime.format.char
-
 
 @Suppress("ClassName")
 object konsole {
 
+    private const val PLUGIN_INSTALLATION_ERROR = """Ensure you implement plugin id("konsole-plugin")"""
+
     fun info(message: String, vararg args: Any) {
-        TODO("This Code should be converted to println($message). Ensure you implement plugin to use")
+        TODO("This Code should be converted to println($message). $PLUGIN_INSTALLATION_ERROR")
+    }
+
+    fun info(tag: String, message: String, vararg args: Any) {
+        TODO("This Code should be converted to println($tag: $message). $PLUGIN_INSTALLATION_ERROR")
     }
 
     fun warn(message: String, vararg args: Any) {
-        TODO("This Code should be converted to println($message). Ensure you implement plugin to use")
+        TODO("This Code should be converted to println($message). $PLUGIN_INSTALLATION_ERROR")
     }
 
     fun wtf(message: String, vararg args: Any) {
-        TODO("This Code should be converted to println($message). Ensure you implement plugin to use")
+        TODO("This Code should be converted to println($message). $PLUGIN_INSTALLATION_ERROR")
     }
 
     fun error(message: String, vararg args: Any) {
-        TODO("This Code should be converted to println($message). Ensure you implement plugin to use")
+        TODO("This Code should be converted to println($message). $PLUGIN_INSTALLATION_ERROR")
     }
 
     fun debug(message: String, vararg args: Any) {
-        TODO("This Code should be converted to println($message). Ensure you implement plugin to use")
+        TODO("This Code should be converted to println($message). $PLUGIN_INSTALLATION_ERROR")
     }
 
-    fun infoWithLineAndCol(tag: String, line: Long, col: Long, message: String) {
-        println("${getTag(tag, line, col)}: $message")
+    fun logStart() {
+        TODO("""This code should be converted to println("$nowAsString"). $PLUGIN_INSTALLATION_ERROR""")
     }
 
-    fun infoWithLineAndColAndDate(tag: String, line: Long, col: Long, message: String) {
-        val fullTag = getTag(tag, line, col)
-        println("$now $fullTag:$message")
+    /**
+     * Logs the duration a function took to execute.
+     * There might be a couple so how do we
+     *
+     * import kotlinx.coroutines.currentCoroutineContext
+     *
+     * val coroutineName = currentCoroutineContext()[CoroutineName]?.name
+     **/
+    fun <T> timeExecution(expression: () -> T): T {
+        val start = nowEpochSeconds
+        val result = expression()
+        val duration = nowEpochSeconds - start
+        println("[INFO] TOOK ${duration}ms")
+        return result
     }
 
-    private fun getTag(tag: String, line: Long, col: Long) = "($line:$col)[$tag]"
 
-    private val now: String
-        get() {
-            val currentDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            val format = LocalDateTime.Format {
-                year()
-                char('-')
-                monthNumber()
-                char('-')
-                dayOfMonth()
-                char(' ')
-                hour()
-                char(':')
-                minute()
-                char(':')
-                second()
-            }
+    fun log(expression: () -> String) {
 
-            val formattedDateTime = currentDateTime.format(format)
-            return formattedDateTime
-        }
-
+    }
 }
