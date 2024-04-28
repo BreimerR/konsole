@@ -7,7 +7,9 @@ plugins {
     `maven-publish`
 }
 
-group = "libetal.libraries"
+val projectGroup: String by extra
+
+group = projectGroup
 version = libs.versions.konsoleVersion.get()
 
 val artifactoryUrl: String by extra

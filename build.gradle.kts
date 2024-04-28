@@ -11,14 +11,18 @@ plugins {
 
 
 allprojects {
-    val artifactoryUrl = "http://127.0.1.1:8082/artifactory/libetal"
-    extra["artifactoryUrl"] = artifactoryUrl
+    val artifactoryUrl = "http://127.0.1.1:8082/artifactory"
+    extra["gradleArtifactoryUrl"] = "$artifactoryUrl/konsole-plugin"
+    extra["artifactoryUrl"] = "$artifactoryUrl/local"
+    val projectGroup = "libraries.kotlin"
+    extra["projectGroup"] = "libetal.$projectGroup"
+    extra["cliProjectGroup"] =  "libetal.$projectGroup"
 
     repositories {
         google()
         mavenLocal()
         mavenCentral()
-        /*maven {
+        maven {
             name = "localPluginRepository"
             url = uri(artifactoryUrl)
             credentials {
@@ -26,7 +30,7 @@ allprojects {
                 password = "H.v86j^Xcf"
             }
             isAllowInsecureProtocol = true
-        }*/
+        }
     }
 
 }

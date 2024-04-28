@@ -9,11 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/examples" />
+            <option value="$PROJECT_DIR$/cli" />
+            <option value="$PROJECT_DIR$/konsole-gradle" />
             <option value="$PROJECT_DIR$/lib" />
-            <option value="$PROJECT_DIR$/plugins/cli" />
-            <option value="$PROJECT_DIR$/plugins/gradle" />
-            <option value="$PROJECT_DIR$/plugins/k2" />
           </set>
         </option>
       </GradleProjectSettings>
