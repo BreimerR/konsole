@@ -18,7 +18,7 @@ kotlin {
 //    jvmToolchain(17)
 
     androidTarget {
-        publishLibraryVariants("release")
+        publishLibraryVariants("release","debug")
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"

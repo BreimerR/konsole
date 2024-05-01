@@ -1,6 +1,6 @@
 expect fun test()
 
-val end = 10000
+val end = 10
 fun main(vararg args: String) {
     test()
 }

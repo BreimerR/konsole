@@ -115,6 +115,21 @@ buildConfig {
     val libProject = project(":konsole")
     buildConfigField("String", "KONSOLE_LIB_VERSION", "\"${libProject.version}\"")
     buildConfigField("String", "KONSOLE_LIB_NAME", "\"${libProject.name}\"")
-    buildConfigField("String", "KONSOLE_LIB_GROUP_NAME", "\"${libProject.group}\"")
+    buildConfigField("String", "KONSOLE_LIB_GROUP_NAME", """"${libProject.group}"""")
+
+    val sl4jProject = project(":konsole-sl4j")
+    buildConfigField(
+        "String?",
+        "KONSOLE_SL4J_VERSION",
+
+        sl4jProject.project.version.toString().ifBlank { null }
+            .let { if (it == "unspecified") null else it }
+            .let { string ->
+                when (string) {
+                    null -> """"${libs.versions.konsoleVersion.get()}""""
+                    else -> """"$string""""
+                }
+            }
+    )
 
 }

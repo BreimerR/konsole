@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.konsole)
-   // id("module.publication")
+    // id("module.publication")
 }
 
 
@@ -52,7 +52,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 //implementation("libetal.libraries:konsole:${libs.versions.konsoleVersion.get()}")
-                implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:+") // Replace with desired version
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+") // Replace with desired version
             }
         }
         val commonTest by getting {
@@ -61,15 +61,16 @@ kotlin {
             }
         }
 
-        val jvmMain by getting{
+        val jvmMain by getting {
             dependencies {
-                implementation("org.slf4j:slf4j-api:1.8.0-beta4") // Replace with exact version
-                implementation ("ch.qos.logback:logback-classic:+") // Replace with desired version
+                implementation("org.slf4j:slf4j-api:1.8.0-beta4")
+                implementation("ch.qos.logback:logback-classic:+")
             }
 
         }
     }
 }
+
 
 android {
     namespace = "org.jetbrains.kotlinx.multiplatform.library.template"
@@ -77,4 +78,12 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+}
+
+
+konsole {
+    sl4j {
+        version = libs.versions.konsoleVersion.get()
+    }
+
 }

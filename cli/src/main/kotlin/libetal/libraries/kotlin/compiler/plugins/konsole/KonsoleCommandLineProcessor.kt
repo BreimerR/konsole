@@ -10,31 +10,89 @@ import org.jetbrains.kotlin.config.CompilerConfigurationKey
 class KonsoleCommandLineProcessor : CommandLineProcessor {
 
     override val pluginId: String
-        get() = "libetal.libraries.kotlin.compiler.plugins.konsole"
+        get() = "konsole-cli"
+
 
     override val pluginOptions: Collection<AbstractCliOption>
-        get() = listOf(ENABLED_OPTION)
+        get() = cliOptionDelegates.map { it.option }
 
-    override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration) =
-        when (option) {
-            ENABLED_OPTION -> configuration.put(ENABLE_OPTION_KEY, value == "true")
-            else -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
+    override fun processOption(option: AbstractCliOption, value: String, configuration: CompilerConfiguration) {
+
+        val cliOptionDelegate = cliOptionDelegates.firstOrNull { it.name == option.optionName }
+
+        when (cliOptionDelegate) {
+            null -> throw CliOptionProcessingException("Unknown option: ${option.optionName}")
+            else -> configuration.put(cliOptionDelegate.key, cliOptionDelegate.converter(value))
         }
+    }
 
     companion object {
 
-        private const val ENABLED_OPTION_DESCRIPTION = "Allow using of the plugin"
+        val ENABLED_NAME = "enabled"
+        val ENABLED_WTF = "enableWTF"
+        val ENABLE_INFO = "enableInfo"
+        val ENABLE_WARN = "enableWarning"
+        val ENABLE_DEBUG = "enableDebug"
 
-        val ENABLED_OPTION = CliOption(
-            "enabled",
-            "true/false",
-            ENABLED_OPTION_DESCRIPTION,
-            required = false,
-            allowMultipleOccurrences = false,
-        )
+        private val cliOptionDelegates by lazy {
+            listOf(
+                CliOptionDelegate(
+                    ENABLED_NAME,
+                    "true/false",
+                    "Allow using of the plugin"
+                ) {
+                    it.toBoolean()
+                },
+                CliOptionDelegate(
+                    ENABLED_WTF,
+                    "true/false",
+                    "Enable WTF logs"
+                ) {
+                    it.toBoolean()
+                },
+                CliOptionDelegate(
+                    ENABLE_INFO,
+                    "true/false",
+                    "Enable WTF logs"
+                ) {
+                    it.toBoolean()
+                },
+                CliOptionDelegate(
+                    ENABLE_DEBUG,
+                    "true/false",
+                    "Enable WTF logs"
+                ) {
+                    it.toBoolean()
+                },
+                CliOptionDelegate(
+                    ENABLE_WARN,
+                    "true/false",
+                    "Enable WTF logs"
+                ) {
+                    it.toBoolean()
+                },
+            )
+        }
 
-        val ENABLE_OPTION_KEY: CompilerConfigurationKey<Boolean> =
-            CompilerConfigurationKey.create(ENABLED_OPTION_DESCRIPTION)
+        operator fun get(name: String) = cliOptionDelegates.first { it.name == name }
+
+        class CliOptionDelegate<T>(
+            val name: String,
+            valueDescription: String,
+            description: String,
+            required: Boolean = false,
+            single: Boolean = true,
+            val converter: (String) -> T
+        ) {
+            val option = CliOption(
+                name,
+                valueDescription,
+                description,
+                required = required,
+                allowMultipleOccurrences = !single,
+            )
+            val key = CompilerConfigurationKey<T>(name)
+        }
 
     }
 }

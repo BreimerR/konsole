@@ -50,8 +50,4 @@ object konsole {
         return result
     }
 
-
-    fun log(expression: () -> String) {
-
-    }
 }

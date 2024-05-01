@@ -4,7 +4,7 @@ actual fun test() {
     konsole.timeExecution {
         var i = 0
         while (i < end) {
-            print("")
+            konsole.debug("Test")
             i++
         }
     }

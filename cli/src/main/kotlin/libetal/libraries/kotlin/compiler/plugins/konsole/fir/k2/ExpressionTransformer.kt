@@ -1,7 +1,6 @@
 package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
-import org.jetbrains.kotlin.codegen.IrExpressionLambda
 import org.jetbrains.kotlin.ir.IrFileEntry
 import org.jetbrains.kotlin.ir.backend.js.utils.valueArguments
 import org.jetbrains.kotlin.ir.builders.*
@@ -24,12 +23,18 @@ class ExpressionTransformer(
     private fun IrBuilderWithScope.irKLog(
         expression: IrCall,
         fileEntry: IrFileEntry
-    ) = when (val qualifiedName = expression.fqPackageName) {
+    ) = when (expression.packageName) {
         "libetal.libraries.konsole" -> when (val message = expression.valueArguments.firstOrNull()) {
             null -> expression
             else -> when (val tag = expression.simpleName) {
-                "info", "warn" -> expression.generateTaggedLogExpression(this, fileEntry, tag, message)
-                "debug" -> expression.generateDebugExpression(this, fileEntry, tag, message)
+                "info", "warn" -> expression.generateTaggedLogExpression(fileEntry, tag, message)
+                "debug" -> expression.generateDebugExpression(
+                    this,
+                    fileEntry,
+                    tag,
+                    message
+                )
+
                 "timeExecution" ->
                     expression.transform(LambdaExpressionTransformer(this@ExpressionTransformer), expression)
 
@@ -41,24 +46,21 @@ class ExpressionTransformer(
 
     }
 
+    private fun IrCall.generateEmpty() = irCall(printFunction, irString(""))
+
     private fun IrCall.generateTaggedLogExpression(
-        scope: IrBuilderWithScope,
         fileEntry: IrFileEntry,
         tag: String,
         message: IrExpression
-    ): IrFunctionAccessExpression = with(scope) {
+    ): IrFunctionAccessExpression {
 
         val (line, col) = getLocationDetails(fileEntry)
 
-        val concat = irConcat().apply {
-            val messagePrefix = """($line:$col)[${tag.uppercase()}] : """
-            addArgument(irString(messagePrefix))
-            addArgument(message)
-        }
+        val messagePrefix = """($line:$col)[${tag.uppercase()}] : """
 
-        return irCall(logFunction).apply {
-            putValueArgument(0, concat)
-        }
+        val concat = irConcat(irString(messagePrefix), message)
+
+        return irCall(printLnFunction, concat)
 
     }
 
@@ -76,28 +78,21 @@ class ExpressionTransformer(
     ): IrFunctionAccessExpression = with(scope) {
 
         val (line, col) = getLocationDetails(fileEntry)
-        val fileName = "${fileEntry.filePath}:${line}:${col}"
 
-        return debugFunctionSymbol.generateExpression(message, this) { call ->
+        return debugFunctionSymbol.generateExpression(message) { call ->
             call.addArguments(
-                irString(fileName),
+                irString(fileEntry.filePath),
                 irString(tag.uppercase()),
                 irInt(line),
                 irInt(col),
                 message
             )
         }
-    }
 
-    fun IrCall.addArguments(vararg argument: IrExpression) {
-        for ((i, arg) in argument.withIndex()) {
-            putValueArgument(i, arg)
-        }
     }
 
     fun IrSimpleFunctionSymbol?.generateExpression(
         message: IrExpression,
-        builder: IrBuilderWithScope,
         requiredExpressionBuilder: (IrCall) -> Unit
     ): IrFunctionAccessExpression {
         return when (val function = this) {
@@ -110,7 +105,7 @@ class ExpressionTransformer(
     }
 
     private fun IrBuilderWithScope.generateFailSafePrintLn(message: IrExpression): IrFunctionAccessExpression {
-        return irCall(logFunction).also { call ->
+        return irCall(printLnFunction).also { call ->
             call.putValueArgument(0, message)
         }
     }
@@ -123,7 +118,7 @@ class ExpressionTransformer(
                     is IrCall -> {
                         val concat = builder.irConcat()
                         concat.addArgument(irString("Calling: ${expression.fqName} "))
-                        +irCall(logFunction).also { call ->
+                        +irCall(printLnFunction).also { call ->
                             call.putValueArgument(0, concat)
                         }
                     }
@@ -140,9 +135,21 @@ class ExpressionTransformer(
     }
 
 
-    private val logFunction by lazy {
+    private val printLnFunction by lazy {
         val functions = moduleFragment.irBuiltins.findFunctions(
             org.jetbrains.kotlin.name.Name.identifier("println"),
+            FqName("kotlin.io")
+        )
+
+        functions.first {
+            it.owner.valueParameters.isNotEmpty()
+        }
+
+    }
+
+    private val printFunction by lazy {
+        val functions = moduleFragment.irBuiltins.findFunctions(
+            org.jetbrains.kotlin.name.Name.identifier("print"),
             FqName("kotlin.io")
         )
 

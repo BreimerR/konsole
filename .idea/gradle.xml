@@ -11,7 +11,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/cli" />
             <option value="$PROJECT_DIR$/konsole-gradle" />
-            <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/lib/common" />
+            <option value="$PROJECT_DIR$/lib/sl4j" />
           </set>
         </option>
       </GradleProjectSettings>

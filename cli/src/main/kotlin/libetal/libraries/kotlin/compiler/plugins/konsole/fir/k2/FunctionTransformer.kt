@@ -1,5 +1,6 @@
 package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
+import libetal.libraries.kotlin.compiler.plugins.konsole.KonsoleConfigs
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.declarations.IrFunction
@@ -15,14 +16,8 @@ class FunctionTransformer(
     builder: DeclarationIrBuilder
 ) : IrElementTransformerWithBuilder<IrFunction>(builder) {
 
-    constructor(
-        moduleFragment: IrModuleFragment,
-        pluginContext: IrPluginContext,
-        symbol: IrFunctionSymbol
-    ) : this(moduleFragment, DeclarationIrBuilder(pluginContext, symbol))
-
     override fun visitExpression(expression: IrExpression, data: IrFunction): IrExpression {
-        val expressionTransformer = ExpressionTransformer(moduleFragment, builder, data)
+        val expressionTransformer = ExpressionTransformer( moduleFragment, builder, data)
 
         return when (expression) {
             is IrWhen -> {

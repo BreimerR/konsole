@@ -1,9 +1,5 @@
 package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
-import com.intellij.psi.PsiBlockStatement
-import com.intellij.psi.PsiCodeBlock
-import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.backend.jvm.ir.psiElement
 import org.jetbrains.kotlin.backend.jvm.ir.receiverAndArgs
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrFileEntry
@@ -12,7 +8,7 @@ import org.jetbrains.kotlin.ir.expressions.impl.IrGetObjectValueImpl
 import org.jetbrains.kotlin.ir.util.packageFqName
 
 
-val IrCall.fqPackageName: String?
+val IrCall.packageName: String?
     get() {
         return when (val context = receiverAndArgs().firstOrNull()) {
             is IrGetObjectValueImpl -> {
@@ -26,7 +22,7 @@ val IrCall.fqPackageName: String?
     }
 
 val IrCall.fqName: String?
-    get() = fqPackageName?.let { "$it.${symbol.owner.name}" }
+    get() = packageName?.let { "$it.${symbol.owner.name}" }
 
 val IrCall.simpleName
     get() = symbol.owner.name.asString()

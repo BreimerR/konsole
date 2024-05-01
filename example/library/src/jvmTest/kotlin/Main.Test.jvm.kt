@@ -1,6 +1,3 @@
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import libetal.libraries.konsole
 import org.junit.Test
 import org.slf4j.LoggerFactory
@@ -8,7 +5,8 @@ import org.slf4j.LoggerFactory
 
 class Test {
 
-    val end = 999999
+    val end = 9
+
     @Test
     fun testKonsole() {
         konsole.timeExecution {

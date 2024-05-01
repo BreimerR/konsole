@@ -33,4 +33,7 @@ include(":konsole-plugin")
 project(":konsole-plugin").projectDir = file("$rootDir/konsole-gradle")
 
 include(":konsole")
-project(":konsole").projectDir = file("$rootDir/lib")
+project(":konsole").projectDir = file("$rootDir/lib/common")
+
+include(":konsole-sl4j")
+project(":konsole-sl4j").projectDir = file("$rootDir/lib/sl4j")

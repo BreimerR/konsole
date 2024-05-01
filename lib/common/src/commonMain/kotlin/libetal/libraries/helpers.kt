@@ -3,8 +3,8 @@ package libetal.libraries
 import kotlinx.datetime.*
 import kotlinx.datetime.format.char
 
-fun infoWithLineAndCol(tag: String, line: Number, col: Number, message: String) {
-    println("${getTag(tag, line, col)}: $message")
+fun infoWithLineAndCol(label: String, line: Number, col: Number, message: String) {
+    println("${getTag(label, line, col)}: $message")
 }
 
 fun infoWithLineAndColAndDate(tag: String, line: Long, col: Long, message: String) {
@@ -12,12 +12,11 @@ fun infoWithLineAndColAndDate(tag: String, line: Long, col: Long, message: Strin
     println("$nowAsString $fullTag:$message")
 }
 
-fun debug(filePath: String, tag: String, line: Number, col: Number, message: String) {
-    val fullTag = getTag(tag, line, col)
-    println("$nowAsString: $filePath $fullTag: $message")
+fun debug(filePath: String, label: String, line: Number, col: Number, message: String) {
+    println("$nowAsString: $filePath:$line:$col [$label]: $message")
 }
 
-private fun getTag(tag: String, line: Number, col: Number) = "($line:$col)[$tag]"
+private fun getTag(label: String, line: Number, col: Number) = "($line:$col)[$label]"
 
 
 internal val now

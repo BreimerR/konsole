@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.metadataDescriptor
+import org.jetbrains.kotlin.gradle.kpm.external.project
 
 plugins {
     kotlin("jvm")
@@ -38,7 +39,11 @@ tasks.test {
 
 kotlin {
     jvmToolchain(17)
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xcontext-receivers")
+    }
 }
+
 
 
 publishing {
