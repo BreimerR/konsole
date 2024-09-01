@@ -15,10 +15,8 @@ version = libs.versions.konsoleVersion.get()
 val artifactoryUrl: String by extra
 
 kotlin {
-//    jvmToolchain(17)
-
     androidTarget {
-        publishLibraryVariants("release","debug")
+        publishLibraryVariants("release", "debug")
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
@@ -34,11 +32,7 @@ kotlin {
             useJUnitPlatform()
         }
     }
-//    js(IR) {
-//        browser()
-//        nodejs()
-//        binaries.library()
-//    }
+
     val hostOs = System.getProperty("os.name").trim().toLowerCaseAsciiOnly()
     val hostArch = System.getProperty("os.arch").trim().toLowerCaseAsciiOnly()
 
@@ -46,15 +40,12 @@ kotlin {
         when (hostOs to hostArch) {
             "linux" to "aarch64" -> ::linuxArm64
             "linux" to "amd64" -> ::linuxX64
-//            "linux" to "arm", "linux" to "arm32" -> ::linuxArm32Hfp
-//            "linux" to "mips", "linux" to "mips32" -> ::linuxMips32
-//            "linux" to "mipsel", "linux" to "mips32el" -> ::linuxMipsel32
             "mac os x" to "aarch64" -> ::macosArm64
             "mac os x" to "amd64", "mac os x" to "x86_64" -> ::macosX64
             "windows 10" to "amd64", "windows server 2022" to "amd64" -> ::mingwX64
-//            "windows" to "x86" -> ::mingwX86
             else -> throw GradleException("Host OS '$hostOs' with arch '$hostArch' is not supported in Kotlin/Native.")
         }
+
     nativeTarget("native") {
         binaries {
             sharedLib()
@@ -106,14 +97,14 @@ publishing {
 
     repositories {
         maven {
-            name = "artifactoryPublication"
-            url = uri(artifactoryUrl)
-            credentials {
-                username = "admin"
-                password = "H.v86j^Xcf"
-            }
+            val sonarTypeUrl = "http://libetal.artifactory.com:8081/repository/kotlin-gradle-plugins/"
+            val jfrogUrl = "http://libetal.artifactory.com:8082/artifactory/libetal/"
+            url = uri(jfrogUrl)
             isAllowInsecureProtocol = true
-
+            credentials {
+                username = System.getenv("MAVEN_USER_NAME").toString()
+                password = System.getenv("MAVEN_PASSWORD").toString()
+            }
         }
 
     }

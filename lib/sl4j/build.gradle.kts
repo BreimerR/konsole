@@ -41,8 +41,8 @@ publishing {
             name = "artifactoryPublication"
             url = uri(artifactoryUrl)
             credentials {
-                username = "admin"
-                password = "H.v86j^Xcf"
+                username = System.getenv("MAVEN_USER_NAME").toString()
+                password = System.getenv("MAVEN_PASSWORD").toString()
             }
             isAllowInsecureProtocol = true
 

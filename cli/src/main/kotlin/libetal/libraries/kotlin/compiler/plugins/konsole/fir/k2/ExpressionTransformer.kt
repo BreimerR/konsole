@@ -2,6 +2,7 @@ package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.ir.IrFileEntry
+import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.valueArguments
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.declarations.IrFunction
@@ -15,7 +16,7 @@ import org.jetbrains.kotlin.ir.util.statements
 import org.jetbrains.kotlin.name.FqName
 
 class ExpressionTransformer(
-    moduleFragment: IrModuleFragment,
+    val moduleFragment: IrModuleFragment,
     builder: DeclarationIrBuilder,
     private val function: IrFunction
 ) : IrElementTransformerWithBuilder<IrExpression>(builder) {

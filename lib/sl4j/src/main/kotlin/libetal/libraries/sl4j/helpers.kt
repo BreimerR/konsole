@@ -16,7 +16,6 @@ fun debug(filePath: String, tag: String, line: Number, col: Number, message: Str
 
 private fun getTag(label: String, line: Number, col: Number) = "($line:$col)[$label]"
 
-
 internal val now
     get() = Clock.System.now()
 

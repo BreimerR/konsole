@@ -2,7 +2,7 @@
   <artifact type="jar" name="konsole-jvm-0.0.1">
     <output-path>$PROJECT_DIR$/lib/common/build/libs</output-path>
     <root id="archive" name="konsole-jvm-0.0.1.jar">
-      <element id="module-output" name="libetal.libraries.kotlin.konsole.konsole.jvmMain" />
+      <element id="module-output" name="konsole.konsole.jvmMain" />
     </root>
   </artifact>
 </component>

@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.internal.kapt.incremental.metadataDescriptor
-import org.jetbrains.kotlin.gradle.kpm.external.project
-
 plugins {
     kotlin("jvm")
     kotlin("kapt")
@@ -9,7 +6,6 @@ plugins {
 
 val cliProjectGroup: String by extra
 
-// libetal/libraries/kotlin/compiler
 group = "$cliProjectGroup.compiler"
 version = libs.versions.konsoleVersion.get()
 
@@ -21,7 +17,6 @@ repositories {
 
 dependencies {
 
-    //implementation(project(":konsole-k2"))
     compileOnly("org.jetbrains.kotlin:kotlin-compiler")
 
     kapt("com.google.auto.service:auto-service:1.0.1")
@@ -70,8 +65,8 @@ publishing {
             name = "artifactoryPublication"
             url = uri(artifactoryUrl)
             credentials {
-                username = "admin"
-                password = "H.v86j^Xcf"
+                username = System.getenv("MAVEN_USER_NAME").toString()
+                password = System.getenv("MAVEN_PASSWORD").toString()
             }
             isAllowInsecureProtocol = true
 

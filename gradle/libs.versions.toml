@@ -1,8 +1,8 @@
 [versions]
 kotlinVersion = "1.9.23"
-projectVersion = "0.0.1"
+projectVersion = "0.0.2"
 kotlinCompiler = "1.9.23"
-konsoleVersion = "0.0.1"
+konsoleVersion = "0.0.2"
 gradlePublishVersion = "1.2.1"
 artifactoryVersion = "5.2.0"
 agpVersion = "8.3.0"

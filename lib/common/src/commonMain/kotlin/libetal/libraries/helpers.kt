@@ -2,6 +2,7 @@ package libetal.libraries
 
 import kotlinx.datetime.*
 import kotlinx.datetime.format.char
+import libetal.kotlin.log.magenta
 
 fun infoWithLineAndCol(label: String, line: Number, col: Number, message: String) {
     println("${getTag(label, line, col)}: $message")
@@ -13,7 +14,9 @@ fun infoWithLineAndColAndDate(tag: String, line: Long, col: Long, message: Strin
 }
 
 fun debug(filePath: String, label: String, line: Number, col: Number, message: String) {
-    println("$nowAsString: $filePath:$line:$col [$label]: $message")
+    val coloredMessage = message.magenta
+    val coloredLabel = label.magenta
+    println("$nowAsString: $filePath:$line:$col [$coloredLabel]: $coloredMessage")
 }
 
 private fun getTag(label: String, line: Number, col: Number) = "($line:$col)[$label]"
