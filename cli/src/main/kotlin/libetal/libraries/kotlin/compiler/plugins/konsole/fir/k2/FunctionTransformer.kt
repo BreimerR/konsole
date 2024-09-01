@@ -18,9 +18,7 @@ class FunctionTransformer(
         val expressionTransformer = ExpressionTransformer(moduleFragment, builder, data)
 
         return when ( expression) {
-            is IrWhen -> if("${data.kotlinFqName}" == "libetal.libraries.kui.application.glfwApplication")
-                expression.transform(WhenBranchTransformer(builder, expressionTransformer), expression)
-            else expression
+            is IrWhen -> expression.transform(WhenBranchTransformer(builder, expressionTransformer), expression)
 
             is IrCall -> expression.transform(expressionTransformer, expression)
 
