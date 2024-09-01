@@ -2,13 +2,9 @@ package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
 
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
-import org.jetbrains.kotlin.ir.IrElement
-import org.jetbrains.kotlin.ir.IrStatement
-import org.jetbrains.kotlin.ir.declarations.IrFunction
-import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.expressions.impl.IrBranchImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrCallImpl
-import org.jetbrains.kotlin.ir.util.fileEntry
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrWhen
 
 class WhenBranchTransformer(builder: DeclarationIrBuilder, private val expressionTransformer: ExpressionTransformer) :
     IrElementTransformerWithBuilder<IrWhen>(builder) {
