@@ -3,6 +3,7 @@ plugins {
     id("com.github.gmazzo.buildconfig")
     alias(libs.plugins.gradle.publish)
     alias(libs.plugins.artifactory)
+    id("libetal-gradle-versioner")
     `maven-publish`
 
 }
@@ -12,7 +13,7 @@ val artifactoryUrl: String by extra
 
 val projectGroup: String by extra
 group = projectGroup
-version = libs.versions.konsoleVersion.get()
+version = versioner.version
 
 repositories {
     mavenCentral()
@@ -126,7 +127,7 @@ buildConfig {
             .let { if (it == "unspecified") null else it }
             .let { string ->
                 when (string) {
-                    null -> """"${libs.versions.konsoleVersion.get()}""""
+                    null -> """"${versioner.version}""""
                     else -> """"$string""""
                 }
             }

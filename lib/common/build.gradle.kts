@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 plugins {
     kotlin("multiplatform")
+    id("libetal-gradle-versioner")
     alias(libs.plugins.android.library)
     `maven-publish`
 }
@@ -10,7 +10,7 @@ plugins {
 val projectGroup: String by extra
 
 group = projectGroup
-version = libs.versions.konsoleVersion.get()
+version = versioner.version
 
 val artifactoryUrl: String by extra
 
@@ -33,8 +33,8 @@ kotlin {
         }
     }
 
-    val hostOs = System.getProperty("os.name").trim().toLowerCaseAsciiOnly()
-    val hostArch = System.getProperty("os.arch").trim().toLowerCaseAsciiOnly()
+    val hostOs = System.getProperty("os.name").trim().lowercase()
+    val hostArch = System.getProperty("os.arch").trim().lowercase()
 
     val nativeTarget: (String, org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget.() -> Unit) -> KotlinTarget =
         when (hostOs to hostArch) {
@@ -62,7 +62,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib", "2.0.0-RC1"))
+                implementation(kotlin("stdlib", libs.versions.kotlinVersion.get()))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:+")
             }
         }
@@ -78,9 +78,8 @@ kotlin {
 
 publishing {
     publications {
-        create<MavenPublication>("konsoleMaven") {
+        create<MavenPublication>("konsoleSL4JMaven") {
             artifactId = project.name
-            version = libs.versions.konsoleVersion.get()
             from(components["kotlin"])
             pom {
                 name = "konsole"
@@ -97,19 +96,18 @@ publishing {
 
     repositories {
         maven {
-            val sonarTypeUrl = "http://libetal.artifactory.com:8081/repository/kotlin-gradle-plugins/"
-            val jfrogUrl = "http://libetal.artifactory.com:8082/artifactory/libetal/"
-            url = uri(jfrogUrl)
-            isAllowInsecureProtocol = true
+            name = "artifactoryPublication"
+            url = uri(artifactoryUrl)
             credentials {
                 username = System.getenv("MAVEN_USER_NAME").toString()
                 password = System.getenv("MAVEN_PASSWORD").toString()
             }
+            isAllowInsecureProtocol = true
+
         }
 
     }
 }
-
 
 android {
     namespace = projectGroup

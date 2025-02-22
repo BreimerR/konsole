@@ -1,13 +1,14 @@
 plugins {
     kotlin("jvm")
     kotlin("kapt")
+    id("libetal-gradle-versioner")
     `maven-publish`
 }
 
 val cliProjectGroup: String by extra
 
 group = "$cliProjectGroup.compiler"
-version = libs.versions.konsoleVersion.get()
+version = versioner.version
 
 val artifactoryUrl: String by extra
 
@@ -45,7 +46,6 @@ publishing {
     publications {
         create<MavenPublication>("embeddableMaven") {
             artifactId = project.name
-            version = libs.versions.konsoleVersion.get()
             from(components["kotlin"])
             pom {
                 name = project.name

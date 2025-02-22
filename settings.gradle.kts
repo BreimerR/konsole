@@ -14,6 +14,24 @@ pluginManagement {
             isAllowInsecureProtocol = true
         }
 
+        maven {
+            url = uri("http://libetal.artifactory.com:8082/artifactory/kotlin-gradle-plugins/")
+            isAllowInsecureProtocol = true
+            credentials {
+                username = System.getenv("MAVEN_USER_NAME").toString()
+                password = System.getenv("MAVEN_PASSWORD").toString()
+            }
+        }
+
+        maven {
+            url = uri("http://libetal.artifactory.com:8081/repository/kotlin-gradle-plugins/")
+            isAllowInsecureProtocol = true
+            credentials {
+                username = System.getenv("MAVEN_USER_NAME").toString()
+                password = System.getenv("MAVEN_PASSWORD").toString()
+            }
+        }
+
     }
 }
 

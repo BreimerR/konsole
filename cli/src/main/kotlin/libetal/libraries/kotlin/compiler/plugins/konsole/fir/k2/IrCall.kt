@@ -10,8 +10,15 @@ import org.jetbrains.kotlin.ir.util.packageFqName
 
 val IrCall.packageName: String?
     get() {
-        return when (val context = receiverAndArgs().firstOrNull()) {
-            is IrGetObjectValueImpl -> {
+        val context = try {
+            receiverAndArgs().firstOrNull()
+        } catch (e: Exception) {
+            null
+        } catch (e:  java.lang.NoSuchMethodError){
+            null
+        }
+        return when {
+            context is IrGetObjectValueImpl -> {
                 val pkgName = context.symbol.owner.packageFqName?.asString() ?: ""
                 val receiverName = receiverSimpleName?.let { ".$it" } ?: ""
                 "$pkgName$receiverName"
@@ -29,8 +36,15 @@ val IrCall.simpleName
 
 val IrCall.receiverSimpleName: String?
     get() {
-        return when (val context = receiverAndArgs().firstOrNull()) {
-            is IrGetObjectValueImpl -> context.symbol.owner.name.asString()
+        val context = try {
+            receiverAndArgs().firstOrNull()
+        } catch (e: Exception) {
+            null
+        } catch (e:  java.lang.NoSuchMethodError){
+            null
+        }
+        return when {
+            context is IrGetObjectValueImpl -> context.symbol.owner.name.asString()
 
             else -> null
         }

@@ -1,27 +1,27 @@
 plugins {
     kotlin("jvm")
+    id("libetal-gradle-versioner")
     `maven-publish`
 }
 
 val projectGroup: String by extra
 
 group = projectGroup
-version = libs.versions.konsoleVersion.get()
+version = versioner.version
 
 val artifactoryUrl: String by extra
 
 dependencies {
     implementation(project(":konsole"))
     implementation("org.slf4j:slf4j-api:1.8.0-beta4")
-    implementation("ch.qos.logback:logback-classic:+")
-    api("org.jetbrains.kotlinx:kotlinx-datetime:+")
+    implementation("ch.qos.logback:logback-classic:1.5.8")
+    api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
 }
 
 publishing {
     publications {
         create<MavenPublication>("konsoleSL4JMaven") {
             artifactId = project.name
-            version = libs.versions.konsoleVersion.get()
             from(components["kotlin"])
             pom {
                 name = "konsole"
