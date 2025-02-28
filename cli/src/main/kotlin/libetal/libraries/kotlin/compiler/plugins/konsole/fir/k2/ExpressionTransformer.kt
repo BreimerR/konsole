@@ -1,8 +1,9 @@
 package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
+import org.jetbrains.kotlin.ir.InternalSymbolFinderAPI
+import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.IrFileEntry
-import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.valueArguments
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.declarations.IrFunction
@@ -10,13 +11,14 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrTypeAlias
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
+import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.util.fileEntry
 import org.jetbrains.kotlin.ir.util.statements
 import org.jetbrains.kotlin.name.FqName
 
 class ExpressionTransformer(
-    val moduleFragment: IrModuleFragment,
+    val irBuiltins: IrBuiltIns,
     builder: DeclarationIrBuilder,
     private val function: IrFunction
 ) : IrElementTransformerWithBuilder<IrExpression>(builder) {
@@ -136,8 +138,9 @@ class ExpressionTransformer(
     }
 
 
-    private val printLnFunction by lazy {
-        val functions = moduleFragment.irBuiltins.findFunctions(
+    @OptIn(InternalSymbolFinderAPI::class, UnsafeDuringIrConstructionAPI::class)
+    private val printLnFunction: IrSimpleFunctionSymbol by lazy {
+        val functions = irBuiltins.symbolFinder.findFunctions(
             org.jetbrains.kotlin.name.Name.identifier("println"),
             FqName("kotlin.io")
         )
@@ -145,11 +148,11 @@ class ExpressionTransformer(
         functions.first {
             it.owner.valueParameters.isNotEmpty()
         }
-
     }
 
+    @OptIn(InternalSymbolFinderAPI::class, UnsafeDuringIrConstructionAPI::class)
     private val printFunction by lazy {
-        val functions = moduleFragment.irBuiltins.findFunctions(
+        val functions = irBuiltins.symbolFinder.findFunctions(
             org.jetbrains.kotlin.name.Name.identifier("print"),
             FqName("kotlin.io")
         )
@@ -158,10 +161,12 @@ class ExpressionTransformer(
             it.owner.valueParameters.isNotEmpty()
         }
 
+
     }
 
+    @OptIn(InternalSymbolFinderAPI::class)
     private val infoWithLineAndCol by lazy {
-        val functions = moduleFragment.irBuiltins.findFunctions(
+        val functions = irBuiltins.symbolFinder.findFunctions(
             org.jetbrains.kotlin.name.Name.identifier("infoWithLineAndCol"),
             FqName("libetal.libraries")
         )
@@ -169,11 +174,11 @@ class ExpressionTransformer(
         functions.firstOrNull {
             true
         }
-
     }
 
+    @OptIn(InternalSymbolFinderAPI::class)
     private val debugFunctionSymbol by lazy {
-        val functions = moduleFragment.irBuiltins.findFunctions(
+        val functions = irBuiltins.symbolFinder.findFunctions(
             org.jetbrains.kotlin.name.Name.identifier("debug"),
             FqName("libetal.libraries")
         )
@@ -181,7 +186,6 @@ class ExpressionTransformer(
         functions.firstOrNull {
             true
         }
-
     }
 
 }

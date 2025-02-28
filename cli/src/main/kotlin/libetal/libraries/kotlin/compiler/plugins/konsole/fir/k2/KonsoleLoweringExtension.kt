@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 open class KonsoleLoweringExtension(private val konsoleConfigs: KonsoleConfigs) : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
-        val pass = ModuleLowering(konsoleConfigs, moduleFragment, pluginContext)
+        val pass = ModuleLowering(konsoleConfigs, pluginContext)
         moduleFragment.transform(pass, null)
     }
 }

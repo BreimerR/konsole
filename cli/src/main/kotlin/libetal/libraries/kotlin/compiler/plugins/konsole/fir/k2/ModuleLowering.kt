@@ -17,7 +17,6 @@ import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
 class ModuleLowering(
     private val konsoleConfigs: KonsoleConfigs,
-    private val moduleFragment: IrModuleFragment,
     private val pluginContext: IrPluginContext
 ) : IrElementTransformerVoid() {
     var line = 0
@@ -53,7 +52,7 @@ class ModuleLowering(
                     }, null) as IrFunction
 
                 currentDeclaration.transform(
-                    FunctionTransformer(moduleFragment, builder),
+                    FunctionTransformer(pluginContext.irBuiltIns, builder),
                     currentDeclaration
                 ) as IrFunction
             }

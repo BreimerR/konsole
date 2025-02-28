@@ -3,6 +3,7 @@ package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.backend.js.utils.valueArguments
 import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.expressions.IrFunctionExpression
 
@@ -14,10 +15,14 @@ class LambdaExpressionTransformer(
         for ((i, arg) in expression.valueArguments.withIndex()) {
             val transformed = when (arg) {
                 is IrFunctionExpression -> arg.transform(FunctionExpressionTransformer(expressionTransformer), arg)
-                else -> arg
+                else ->  arg
             }
             putValueArgument(i, transformed)
         }
+    }
+
+    override fun visitExpression(expression: IrExpression, data: IrFunctionAccessExpression): IrExpression {
+        return expression.transform(expressionTransformer, expression)
     }
 
 }
