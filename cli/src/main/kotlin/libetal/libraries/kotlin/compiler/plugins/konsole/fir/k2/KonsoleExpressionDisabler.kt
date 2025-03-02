@@ -12,10 +12,10 @@ class KonsoleExpressionDisabler(builder: DeclarationIrBuilder, val validator: Ir
 
     override val IrExpression.transformElement: IrCall?
         get() = when (this) {
-            is IrCall -> this
+            is IrCall -> if(shouldTransform) this else null
             else -> null
         }
 
-    override fun transform(expression: IrCall): IrCall? = null
+    override fun transform(expression: IrCall): IrCall? = if(expression.shouldTransform) null else expression
 
 }

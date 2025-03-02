@@ -63,7 +63,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib", libs.versions.kotlinVersion.get()))
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:+")
+                implementation(libs.kotlinx.datetime)
             }
         }
 

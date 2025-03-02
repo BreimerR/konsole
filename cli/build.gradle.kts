@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     kotlin("kapt")
+    //alias(libs.plugins.konsole)
     id("libetal-gradle-versioner")
     `maven-publish`
 }
@@ -17,11 +18,11 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.konsole.jvm)
+    compileOnly(libs.kotlin.compiler)
 
-    compileOnly("org.jetbrains.kotlin:kotlin-compiler")
-
-    kapt("com.google.auto.service:auto-service:1.0.1")
-    compileOnly("com.google.auto.service:auto-service-annotations:1.0.1")
+    kapt(libs.auto.service)
+    compileOnly(libs.auto.service.annotations)
 
 
     testImplementation(kotlin("test"))
@@ -39,8 +40,6 @@ kotlin {
         freeCompilerArgs = listOf("-Xcontext-receivers")
     }
 }
-
-
 
 publishing {
     publications {

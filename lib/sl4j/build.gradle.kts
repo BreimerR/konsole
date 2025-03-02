@@ -13,9 +13,9 @@ val artifactoryUrl: String by extra
 
 dependencies {
     implementation(project(":konsole"))
-    implementation("org.slf4j:slf4j-api:1.8.0-beta4")
-    implementation("ch.qos.logback:logback-classic:1.5.8")
-    api("org.jetbrains.kotlinx:kotlinx-datetime:0.6.1")
+    implementation(libs.slf4j.api)
+    implementation(libs.logback.classic)
+    api(libs.kotlinx.datetime)
 }
 
 publishing {

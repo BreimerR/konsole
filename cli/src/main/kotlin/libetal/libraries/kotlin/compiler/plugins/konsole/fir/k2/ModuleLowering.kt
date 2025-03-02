@@ -7,11 +7,13 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.backend.js.utils.valueArguments
 import org.jetbrains.kotlin.ir.builders.irBlockBody
+import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrFile
 
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.expressions.*
+import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.util.statements
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 
@@ -52,8 +54,8 @@ class ModuleLowering(
                     }, null) as IrFunction
 
                 currentDeclaration.transform(
-                    FunctionTransformer(pluginContext.irBuiltIns, builder),
-                    currentDeclaration
+                    KonsoleExpressionTransformer(pluginContext.irBuiltIns, builder, declaration),
+                    null
                 ) as IrFunction
             }
         } as IrFunction

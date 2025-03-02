@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.artifactory) apply false
+    alias(libs.plugins.konsole) apply false
     id("libetal-gradle-versioner") version "1.0.20" apply false
     id("com.github.gmazzo.buildconfig") version "3.1.0" apply false
 

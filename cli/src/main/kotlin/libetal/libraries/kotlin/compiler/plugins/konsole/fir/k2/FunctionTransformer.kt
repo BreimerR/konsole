@@ -1,13 +1,14 @@
 package libetal.libraries.kotlin.compiler.plugins.konsole.fir.k2
 
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
-import org.jetbrains.kotlin.backend.common.serialization.proto.IrWhile
+import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
+import org.jetbrains.kotlin.codegen.IrExpressionLambda
 import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.declarations.IrFunction
-import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
-import org.jetbrains.kotlin.ir.declarations.name
-import org.jetbrains.kotlin.ir.expressions.*
-import org.jetbrains.kotlin.ir.util.file
+import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrLoop
+import org.jetbrains.kotlin.ir.expressions.IrWhen
 import org.jetbrains.kotlin.ir.util.fileEntry
 import org.jetbrains.kotlin.ir.util.kotlinFqName
 
@@ -24,7 +25,14 @@ class FunctionTransformer(
 
             is IrCall -> expression.transform(expressionTransformer, expression)
 
-            is IrLoop -> expression.transform(expressionTransformer, expression)
+            is IrLoop -> {
+                if (data.kotlinFqName.toString().contains("libetal.libraries.kui.engines.Vulkan")) {
+                    println("konsole: ${data.kotlinFqName} ${expression.line(data.fileEntry)}")
+                }
+                expression
+            }
+
+            is IrExpressionLambda -> throw RuntimeException("Not supported yet")
 
             else -> expression
         }

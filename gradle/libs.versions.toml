@@ -1,5 +1,8 @@
 [versions]
+autoServiceAnnotationsVersion = "1.0.1"
 kotlinVersion = "2.1.20-RC"
+kotlinxDatetimeVersion = "0.6.2"
+logbackClassicVersion = "1.5.8"
 projectVersion = "0.0.2"
 kotlinCompiler = "2.1.20-RC"
 gradlePublishVersion = "1.2.1"
@@ -8,12 +11,24 @@ agpVersion = "8.3.0"
 android-compile-sdk = "33"
 android-min-sdk = "24"
 jvmVersion = "1.8"
+konsoleVersion = "0.1.18"
+slf4jApiVersion = "2.0.15"
 
 [libraries]
+auto-service = { module = "com.google.auto.service:auto-service", version.ref = "autoServiceAnnotationsVersion" }
+auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "autoServiceAnnotationsVersion" }
+konsole = { group = "libetal.libraries.kotlin", name = "konsole", version.ref = "konsoleVersion" }
+konsole-jvm = { group = "libetal.libraries.kotlin", name = "konsole-jvm", version.ref = "konsoleVersion" }
 jetbrains-kotlin-compiler = { group = "org.jetbrains.kotlin", name = "kotlin-compiler", version.ref = "kotlinCompiler" }
 jetbrains-kotlin-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-compiler-embeddable", version.ref = "kotlinCompiler" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetimeVersion" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassicVersion" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4jApiVersion" }
+
 
 [plugins]
+konsole = { id = "konsole-plugin", version.ref = "konsoleVersion" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
 kotlin = { id = "multiplatform", version.ref = "kotlinVersion" }
 android-library = { id = "com.android.library", version.ref = "agpVersion" }

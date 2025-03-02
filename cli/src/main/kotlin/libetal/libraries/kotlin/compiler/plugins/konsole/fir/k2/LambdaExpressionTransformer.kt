@@ -15,7 +15,7 @@ class LambdaExpressionTransformer(
         for ((i, arg) in expression.valueArguments.withIndex()) {
             val transformed = when (arg) {
                 is IrFunctionExpression -> arg.transform(FunctionExpressionTransformer(expressionTransformer), arg)
-                else ->  arg
+                else -> arg
             }
             putValueArgument(i, transformed)
         }
